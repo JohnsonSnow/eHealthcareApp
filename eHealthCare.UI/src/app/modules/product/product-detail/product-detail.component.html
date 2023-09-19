@@ -1,0 +1,52 @@
+<div class="card">
+  <div class="card-header"
+       *ngIf="product">
+    {{pageTitle + ": " + product.name}}
+  </div>
+  <div class="card-body"
+       *ngIf="employee">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-md-3">Name:</div>
+          <div class="col-md-6">{{product.name}}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">Classification:</div>
+          <div class="col-md-6">{{product.classification}}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">Competent Authority Status:</div>
+          <div class="col-md-6">{{product.competentAuthorityStatus}}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">Internal Status:</div>
+          <div class="col-md-6">{{product.internalStatus}}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">Unit:</div>
+          <div class="col-md-6">{{product.unit}}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">Active Ingredients:</div>
+          <div class="col-md-6">{{product.activeIngredients}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-md-4">
+        <button class="btn btn-outline-secondary mr-3"
+                style="width:80px"
+                (click)="onBack()">
+          <i class="fa fa-chevron-left"></i> Back
+        </button>
+        <button class="btn btn-outline-primary"
+                style="width:80px"
+                [routerLink]="['/products', product.id,'update']">
+          Edit
+        </button>
+      </div>
+    </div>
+  </div>
+ 
+</div>   

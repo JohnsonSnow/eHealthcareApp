@@ -1,0 +1,120 @@
+<div class="card">
+  <div class="card-header">
+    {{pageTitle}}
+  </div>
+
+  <div class="card-body">
+    <form novalidate
+          (ngSubmit)="saveProduct()"
+          [formGroup]="productForm">
+
+      <div class="form-group row mb-2">
+        <label class="col-md-3 col-form-label"
+               for="employeeNameId">Product Name</label>
+        <div class="col-md-7">
+          <input class="form-control"
+                 id="employeeNameId"
+                 type="text"
+                 placeholder="Name (required)"
+                 formControlName="name"
+                 [ngClass]="{'is-invalid': displayMessage['name'] }" />
+          <span class="invalid-feedback">
+            {{displayMessage['name']}}
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group row mb-2">
+        <label class="col-md-3 col-form-label"
+               for="classificationnameId">Classification</label>
+        <div class="col-md-7">
+          <input class="form-control"
+                 id="classificationnameid"
+                 type="text"
+                 placeholder="Classification (required)"
+                 formControlName="classification"
+                 [ngClass]="{'is-invalid': displayMessage['classification']}" />
+          <span class="invalid-feedback">
+            {{displayMessage['classification']}}
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group row mb-2">
+        <label class="col-md-3 col-form-label"
+               for="competentAuthorityStatusId">Competent Authority Status</label>
+        <div class="col-md-7">
+          <input class="form-control"
+                 id="competentAuthorityStatusId"
+                 type="text"
+                 placeholder="Competent Authority Status"
+                 formControlName="competentAuthorityStatus" />
+        </div>
+      </div>
+
+      <div class="form-group row mb-2">
+        <label class="col-md-3 col-form-label"
+               for="internalStatusId">Internal Status</label>
+        <div class="col-md-7">
+          <select id="internalStatusId" formControlName="internalStatus" class="form-control">
+            <option value="" disabled selected>Select an Option</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+
+        </div>
+      </div>
+
+      <div class="form-group row mb-2">
+        <label class="col-md-3 col-form-label"
+               for="unitId">Unit</label>
+        <div class="col-md-7">
+          <input class="form-control"
+                 id="unitId"
+                 type="text"
+                 placeholder="Unit"
+                 formControlName="unit" />
+        </div>
+      </div>
+
+      <!--<div class="form-group row mb-2">
+        <label class="col-md-3 col-form-label"
+               for="designationId">Designation</label>
+        <div class="col-md-7">
+          <input class="form-control"
+                 id="designationId"
+                 type="text"
+                 placeholder="Designation"
+                 formControlName="designation" />
+        </div>
+      </div>-->
+
+      <div class="form-group row mb-2">
+        <div class="offset-md-2 col-md-6">
+          <button class="btn btn-primary mr-3"
+                  style="width:80px;"
+                  type="submit"
+                  [title]="productForm.valid ? 'Save your entered data' : 'Disabled until the form data is valid'"
+                  [disabled]="!productForm.valid">
+            Save
+          </button>
+          <button class="btn btn-outline-secondary mr-3"
+                  style="width:80px;"
+                  type="button"
+                  title="Cancel your edits"
+                  [routerLink]="['/products']">
+            Cancel
+          </button>
+          <button class="btn btn-outline-warning" *ngIf="pageTitle != 'Add Product'"
+                  style="width:80px"
+                  type="button"
+                  title="Delete this product"
+                  (click)="deleteProduct()">
+            Delete
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+</div>   

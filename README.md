@@ -28,4 +28,4 @@ Provide step-by-step instructions on how to set up and run both the .NET and Ang
 1. Clone the repository to your local machine:
 
    ```bash
-   git clone https://github.com/yourusername/your-project.git
+   git clone https://github.com/JohnsonSnow/eHealthcareApp.git

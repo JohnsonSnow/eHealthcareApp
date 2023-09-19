@@ -29,3 +29,19 @@ Provide step-by-step instructions on how to set up and run both the .NET and Ang
 
    ```bash
    git clone https://github.com/JohnsonSnow/eHealthcareApp.git
+
+2. Navigate to the .NET project directory:
+   ```bash
+   cd eHealthcareApp
+   
+3. Restore dependencies:
+   ```bash
+   dotnet restore
+
+4. Set up your database
+   ```bash
+   dotnet ef database update
+
+5. Run the .NET application:
+   ```bash
+   dotnet run

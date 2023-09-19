@@ -8,8 +8,6 @@ Brief project description or purpose.
 - [Getting Started](#getting-started)
   - [Running the .NET Project](#running-the-net-project)
   - [Running the Angular Project](#running-the-angular-project)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Prerequisites
 
@@ -45,3 +43,20 @@ Provide step-by-step instructions on how to set up and run both the .NET and Ang
 5. Run the .NET application:
    ```bash
    dotnet run
+
+6. Open a web browser and navigate to http://localhost:5000 to access the .NET application.
+
+
+### Running the Angular Project
+
+1. Navigate to the Angular project directory:
+   ```bash
+   cd eHealthcareApp/eHealthcare.UI
+
+2. Install Angular dependencies:
+   ```bash
+   npm install
+
+3. npm start
+
+4. Open a web browser and navigate to http://localhost:4200 to access the Angular application.

@@ -2,5 +2,5 @@
 
 public interface IHubClient
 {
-    Task BroadcaastMessage(Notification notification);
+    Task BroadcastMessage(Notification notification);
 }

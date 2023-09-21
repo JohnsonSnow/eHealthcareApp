@@ -70,14 +70,19 @@ export class ProductService {
     return {
       id: '',
       name: '',
-      classification: '',
+      classifications: '',
       competentAuthorityStatus: '',
       internalStatus: '',
       unit: '',
       activeIngredients: '',
       pharmaceuticalForms: '',
       therapeuticClass: '',
-      atcCode: ''
+      atcCode: '',
+      activeIngredientID: 0,
+      pharmaceuticalFormID: 0,
+      productUnitID: 0,
+      atcCodeID: 0,
+      therapeuticClassID: 0 
     }
   }
 }

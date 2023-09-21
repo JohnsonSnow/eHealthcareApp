@@ -15,7 +15,12 @@ export class SignalrService {
   constructor(private toastr: ToastrService, public productService: ProductService) { }
 
   public startConnection = () => {
-    this.hubConnection = new signalR.HubConnectionBuilder().withUrl(environment.baseUrl + 'notify', { skipNegotiation: true, transport: signalR.HttpTransportType.WebSockets }).build();
+    this.hubConnection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.Information).withUrl("https://localhost:60841/notify",
+      {
+        skipNegotiation: true,
+        transport: signalR.HttpTransportType.WebSockets,
+      }
+    ).build();
 
     this.hubConnection.start().then(() => console.log('Connection started')).catch(err => console.log('Error while starting connection: ' + err))
   }
@@ -28,6 +33,6 @@ export class SignalrService {
   }
 
   showNotification(notification: Notification) {
-    this.toastr.warning(notification.Description, notification.Title);
+    this.toastr.warning(notification.description, notification.title);
   }
 }

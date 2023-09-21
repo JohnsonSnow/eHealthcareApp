@@ -1,0 +1,44 @@
+version: '3.4'
+
+services:
+  ehealthcare:
+    image: ${DOCKER_REGISTRY-}ehealthcare
+    build:
+      context: .
+      dockerfile: eHealthcare/Dockerfile
+    restart: unless-stopped
+    ports:
+    - 50001:80
+    depends_on:
+      - database
+    environment:
+     - DB_HOST=database
+     - DB_SA_PASSWORD="Password1"
+     - DB_NAME=eHealthcare
+    networks:
+      - app-network
+
+
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+        - ACCEPT_EULA="Y"
+        - MSSQL_SA_PASSWORD=Password1
+        - MSSQL_AGENT_ENABLED=1
+        - MSSQL_PID=Express
+    platform: linux/amd64
+    ports:
+        - 1433:1433
+    restart: unless-stopped
+    container_name: database
+    networks:
+        - app-network
+    volumes:
+        - ./data:/var/opt/mssql/data
+        - ./log:/var/opt/mssql/log
+        - ./secrets:/var/opt/mssql/secrets
+
+
+networks:
+  app-network:
+    driver: bridge

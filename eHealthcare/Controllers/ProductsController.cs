@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using eHealthcare.Data;
 using eHealthcare.Entities;
 using Microsoft.AspNetCore.SignalR;
+using eHealthcare.Dto;
 
 namespace eHealthcare.Controllers
 {
@@ -17,11 +18,14 @@ namespace eHealthcare.Controllers
     {
         private readonly eHealthcareContext _context;
         private readonly IHubContext<BroadcastHub, IHubClient> _hubContext;
-        public ProductsController(eHealthcareContext context, IHubContext<BroadcastHub, IHubClient> hubContext = null)
+        private readonly ILogger<ProductsController> _logger;
+        public ProductsController(eHealthcareContext context, IHubContext<BroadcastHub, IHubClient> hubContext = null, ILogger<ProductsController> logger = null)
         {
             _context = context;
             _hubContext = hubContext;
+            _logger = logger;
         }
+
 
         // GET: api/Products
         [HttpGet]
@@ -31,7 +35,7 @@ namespace eHealthcare.Controllers
           {
               return NotFound();
           }
-            return await _context.Product.ToListAsync();
+            return await _context.Product.Include("TherapeuticClass").ToListAsync();
         }
 
         // GET: api/Products/5
@@ -74,7 +78,7 @@ namespace eHealthcare.Controllers
             try
             {
                 await _context.SaveChangesAsync();
-                await _hubContext.Clients.All.BroadcaastMessage(notification);
+                await _hubContext.Clients.All.BroadcastMessage(notification);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -94,12 +98,32 @@ namespace eHealthcare.Controllers
         // POST: api/Products
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
+        public async Task<ActionResult<Product>> PostProduct(ProductDTO productDto)
         {
           if (_context.Product == null)
           {
               return Problem("Entity set 'eHealthcareContext.Product'  is null.");
           }
+
+            var product = new Product
+            {
+                //Id = productDto.Id,
+                Name = productDto.Name,
+                Classifications = productDto.Classifications,
+                CompetentAuthorityStatus = productDto.CompetentAuthorityStatus,
+                InternalStatus = productDto.InternalStatus,
+                ActiveIngredientID = productDto.ActiveIngredientID,
+                ProductUnitID = productDto.ProductUnitID,
+                PharmaceuticalFormID = productDto.PharmaceuticalFormID,
+                TherapeuticClassID = productDto.TherapeuticClassID,
+                ATCCodeID = productDto.ATCCodeID,
+                ActiveIngredient = await _context.ActiveIngredients.FindAsync(productDto.ActiveIngredientID),
+                PharmaceuticalForm = await _context.PharmaceuticalForms.FindAsync(productDto.PharmaceuticalFormID),
+                TherapeuticClass = await _context.TherapeuticClass.FindAsync(productDto.TherapeuticClassID),
+                ProductUnit = await _context.ProductUnits.FindAsync(productDto.ProductUnitID)
+
+          };
+
             _context.Product.Add(product);
             Notification notification = new Notification()
             {
@@ -108,7 +132,7 @@ namespace eHealthcare.Controllers
                 TranType = "Create"
             };
             await _context.SaveChangesAsync();
-            await _hubContext.Clients.All.BroadcaastMessage(notification);
+            await _hubContext.Clients.All.BroadcastMessage(notification);
 
             return CreatedAtAction("GetProduct", new { id = product.Id }, product);
         }
@@ -136,7 +160,7 @@ namespace eHealthcare.Controllers
 
             _context.Product.Remove(product);
             await _context.SaveChangesAsync();
-            await _hubContext.Clients.All.BroadcaastMessage(notification);
+            await _hubContext.Clients.All.BroadcastMessage(notification);
 
             return NoContent();
         }

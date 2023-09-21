@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using eHealthcare.Data;
 using eHealthcare.Entities;
+using eHealthcare.Dto;
+using Mapster;
 
 namespace eHealthcare.Controllers
 {
@@ -34,7 +36,7 @@ namespace eHealthcare.Controllers
 
         // GET: api/ATCCodes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ATCCode>> GetATCCode(Guid id)
+        public async Task<ActionResult<ATCCode>> GetATCCode(int id)
         {
           if (_context.ATCCode == null)
           {
@@ -84,13 +86,23 @@ namespace eHealthcare.Controllers
         // POST: api/ATCCodes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ATCCode>> PostATCCode(ATCCode aTCCode)
+        public async Task<ActionResult<ATCCode>> PostATCCode(ACTCodeDTO aTCCode)
         {
-          if (_context.ATCCode == null)
-          {
-              return Problem("Entity set 'eHealthcareContext.ATCCode'  is null.");
-          }
-            _context.ATCCode.Add(aTCCode);
+              if (_context.ATCCode == null)
+              {
+                  return Problem("Entity set 'eHealthcareContext.ATCCode'  is null.");
+              }
+
+            //var config = new TypeAdapterConfig();
+            var atcCodeModel = new ATCCode
+            {
+                ATCCodeId = aTCCode.ATCCodeId,
+                Code = aTCCode.Code,
+            };
+
+            //  var actcodeResponse = aTCCode.Adapt<atcCodeModel>();
+
+            _context.ATCCode.Add(atcCodeModel);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetATCCode", new { id = aTCCode.ATCCodeId }, aTCCode);

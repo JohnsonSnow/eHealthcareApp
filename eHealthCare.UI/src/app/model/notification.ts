@@ -1,5 +1,5 @@
 export class Notification {
-  public Title!: string;
-  public Description!: string;
-  public TranType!: string;     
+  public title!: string;
+  public description!: string;
+  public tranType!: string;     
 }

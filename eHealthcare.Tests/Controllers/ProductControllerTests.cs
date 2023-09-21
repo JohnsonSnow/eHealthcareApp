@@ -1,5 +1,6 @@
 using eHealthcare.Controllers;
 using eHealthcare.Data;
+using eHealthcare.Dto;
 using eHealthcare.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -217,7 +218,7 @@ namespace eHealthcare.Tests.Controllers
             var controller = new ProductsController(mockContext.Object, mockHubContext.Object);
 
             // Act
-            var result = await controller.PostProduct(new Product { Id = 1, Name = "New Product" });
+            var result = await controller.PostProduct(new ProductDTO { Id = 1, Name = "New Product" });
 
             // Assert
             var createdResponse = Assert.IsType<CreatedAtActionResult>(result.Result);

@@ -4,7 +4,7 @@
     {{pageTitle + ": " + product.name}}
   </div>
   <div class="card-body"
-       *ngIf="employee">
+       *ngIf="product">
     <div class="row">
       <div class="col-md-8">
         <div class="row">
@@ -13,7 +13,7 @@
         </div>
         <div class="row">
           <div class="col-md-3">Classification:</div>
-          <div class="col-md-6">{{product.classification}}</div>
+          <div class="col-md-6">{{product.classifications}}</div>
         </div>
         <div class="row">
           <div class="col-md-3">Competent Authority Status:</div>

@@ -38,25 +38,13 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     //this.getProductData();
-    //const connection = new signalR.HubConnectionBuilder()
-    //  .configureLogging(signalR.LogLevel.Information)
-    //  .withUrl(environment.baseUrl + 'notify')
-    //  .build();
-
-    //connection.start().then(function () {
-    //  console.log('SignalR Connected!');
-    //}).catch(function (err: any) {
-    //  return console.error(err.toString());
-    //});
-
-    //connection.on("BroadcastMessage", () => {
-    //  this.getProductData();
-    //});  
+   
   }
 
   getProductData() {
     this.productService.getProducts().subscribe(
       products => {
+        console.log(products)
         this.products = products;
         this.filteredProducts = this.products;
       },
@@ -68,7 +56,7 @@ export class ProductListComponent implements OnInit {
     if (id === '') {
       this.onSaveComplete();
     } else {
-      if (confirm(`Are you sure want to delete this Employee: ${name}?`)) {
+      if (confirm(`Are you sure want to delete this Product: ${name}?`)) {
         this.productService.deleteProduct(id)
           .subscribe(
             () => this.onSaveComplete(),

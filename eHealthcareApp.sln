@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eHealthcare", "eHealthcare\
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "eHealthCare.UI", "eHealthCare.UI\eHealthCare.UI.esproj", "{F9D92794-FE93-41AE-8DFE-4FC2E54CBD7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eHealthcare.Tests", "eHealthcare.Tests\eHealthcare.Tests.csproj", "{091A2EED-1D22-4F53-9E42-998C7AF16CCD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eHealthcare.Tests", "eHealthcare.Tests\eHealthcare.Tests.csproj", "{091A2EED-1D22-4F53-9E42-998C7AF16CCD}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{2CF621CA-6C5F-4E73-8D7D-57DB2AA83C1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{091A2EED-1D22-4F53-9E42-998C7AF16CCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{091A2EED-1D22-4F53-9E42-998C7AF16CCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{091A2EED-1D22-4F53-9E42-998C7AF16CCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CF621CA-6C5F-4E73-8D7D-57DB2AA83C1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CF621CA-6C5F-4E73-8D7D-57DB2AA83C1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CF621CA-6C5F-4E73-8D7D-57DB2AA83C1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CF621CA-6C5F-4E73-8D7D-57DB2AA83C1D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

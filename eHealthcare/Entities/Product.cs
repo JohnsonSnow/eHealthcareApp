@@ -1,4 +1,6 @@
-﻿namespace eHealthcare.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace eHealthcare.Entities
 {
     public class Product
     {
@@ -25,15 +27,27 @@
         public string InternalStatus { get; set; } = string.Empty;
 
 
-        //public string ActiveIngredientID { get; set; } = string.Empty;
-        //public string PharmaceuticalFormID { get; set; } = string.Empty;
-        //public string ProductUnitID { get; set; } = string.Empty;
-        //public string ATCCodeID { get; set; } = string.Empty;
-        //public string TherapeuticClassID { get; set; } = string.Empty;
+        public int ActiveIngredientID { get; set; }
+        [JsonIgnore]
         public ActiveIngredient ActiveIngredient { get; set; }
+
+        public int PharmaceuticalFormID { get; set; }
+        [JsonIgnore]
+
         public PharmaceuticalForm PharmaceuticalForm { get; set; }
+        public int ProductUnitID { get; set; }
+        [JsonIgnore]
+
         public ProductUnit ProductUnit { get; set; }
+
+        public int ATCCodeID { get; set; }
+        [JsonIgnore]
+
         public ATCCode ATCCode { get; set; }
+
+        public int TherapeuticClassID { get; set; }
+        [JsonIgnore]
+
         public TherapeuticClass TherapeuticClass { get; set; }
     }
 }

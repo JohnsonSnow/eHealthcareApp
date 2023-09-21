@@ -34,9 +34,7 @@ export class ProductUpdateComponent implements OnInit, OnDestroy {
         minlength: 'Product name must be at least three characters.',
         maxlength: 'Product name cannot exceed 50 characters.'
       },
-      cityname: {
-        required: 'Product city name is required.',
-      }
+     
     };
   }  
 
@@ -47,14 +45,19 @@ export class ProductUpdateComponent implements OnInit, OnDestroy {
       Validators.minLength(3),
       Validators.maxLength(50)
       ]],
-      classification: '',
+      classifications: '',
       competentAuthorityStatus: '',
       internalStatus: '',
       unit: '',
       activeIngredients: '',
       pharmaceuticalForms: '',
       therapeuticClass: '',
-      atcCode: ''
+      atcCode: '',
+      activeIngredientID: 0,
+      pharmaceuticalFormID: 0,
+      productUnitID: 0,
+      atcCodeID: 0,
+      therapeuticClassID: 0 
     });
 
     this.sub = this.route.paramMap.subscribe(
@@ -64,14 +67,19 @@ export class ProductUpdateComponent implements OnInit, OnDestroy {
           const product: Product = {
             id: "0",
             name: "",
-            classification: '',
+            classifications: '',
             competentAuthorityStatus: '',
             internalStatus: '',
             unit: '',
             activeIngredients: '',
             pharmaceuticalForms: '',
             therapeuticClass: '',
-            atcCode: ''
+            atcCode: '',
+            activeIngredientID: 0,
+            pharmaceuticalFormID: 0,
+            productUnitID: 0,
+            atcCodeID: 0,
+            therapeuticClassID: 0 
           };
           this.displayProduct(product);
         }
@@ -126,7 +134,8 @@ export class ProductUpdateComponent implements OnInit, OnDestroy {
   saveProduct(): void {  
     if (this.productForm.valid) {  
       if (this.productForm.dirty) {
-        const p = { ...this.product, ...this.productForm.value };  
+        const p = { ...this.product, ...this.productForm.value };
+        console.log(p)
         if (p.id === '0') {
           this.productService.createProduct(p)  
             .subscribe(  

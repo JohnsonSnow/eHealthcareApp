@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using eHealthcare.Entities;
+using System.Diagnostics;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace eHealthcare.Data
 {
@@ -12,6 +15,20 @@ namespace eHealthcare.Data
         public eHealthcareContext (DbContextOptions<eHealthcareContext> options)
             : base(options)
         {
+            try
+            {
+                var databaseCreator = Database.GetService<IDatabaseCreator>() as IRelationalDatabaseCreator;
+                if (databaseCreator != null )
+                {
+                    if (!databaseCreator.CanConnect()) databaseCreator.Create();
+                    if (!databaseCreator.HasTables()) databaseCreator.CreateTables();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+            }
         }
 
         public eHealthcareContext()
@@ -27,33 +44,36 @@ namespace eHealthcare.Data
         public DbSet<TherapeuticClass> TherapeuticClass { get; set; } = default!;
 
 
+       
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configure relationships using Fluent API...
-            modelBuilder.Entity<ActiveIngredient>()
-                .HasOne<Product>(ad => ad.Product)
-                .WithOne(s => s.ActiveIngredient)
-                .HasForeignKey<ActiveIngredient>(ad => ad.ProductOfActiveIngredientId);
+            //modelBuilder.Entity<ActiveIngredient>()
+            //    .HasOne<Product>(ad => ad.Product)
+            //    .WithOne(s => s.ActiveIngredient)
+            //    .HasForeignKey<ActiveIngredient>(ad => ad.ProductOfActiveIngredientId);
 
-            modelBuilder.Entity<PharmaceuticalForm>()
-               .HasOne<Product>(ad => ad.Product)
-               .WithOne(s => s.PharmaceuticalForm)
-               .HasForeignKey<PharmaceuticalForm>(ad => ad.ProductOfPharmaceuticalFormId);
+            //modelBuilder.Entity<PharmaceuticalForm>()
+            //   .HasOne<Product>(ad => ad.Product)
+            //   .WithOne(s => s.PharmaceuticalForm)
+            //   .HasForeignKey<PharmaceuticalForm>(ad => ad.ProductOfPharmaceuticalFormId);
 
-            modelBuilder.Entity<ProductUnit>()
-              .HasOne<Product>(ad => ad.Product)
-              .WithOne(s => s.ProductUnit)
-              .HasForeignKey<ProductUnit>(ad => ad.ProductOfProductUnitId);
+            //modelBuilder.Entity<ProductUnit>()
+            //  .HasOne<Product>(ad => ad.Product)
+            //  .WithOne(s => s.ProductUnit)
+            //  .HasForeignKey<ProductUnit>(ad => ad.ProductOfProductUnitId);
 
-            modelBuilder.Entity<ATCCode>()
-              .HasOne<Product>(ad => ad.Product)
-              .WithOne(s => s.ATCCode)
-              .HasForeignKey<ATCCode>(ad => ad.ProductOfATCCodeId);
+            //modelBuilder.Entity<ATCCode>()
+            //  .HasOne<Product>(ad => ad.Product)
+            //  .WithOne(s => s.ATCCode)
+            //  .HasForeignKey<ATCCode>(ad => ad.ProductOfATCCodeId);
 
-            modelBuilder.Entity<TherapeuticClass>()
-              .HasOne<Product>(ad => ad.Product)
-              .WithOne(s => s.TherapeuticClass)
-              .HasForeignKey<TherapeuticClass>(ad => ad.ProductOfTherapeuticClassId);
+            //modelBuilder.Entity<TherapeuticClass>()
+            //  .HasOne<Product>(ad => ad.Product)
+            //  .WithOne(s => s.TherapeuticClass)
+            //  .HasForeignKey<TherapeuticClass>(ad => ad.ProductOfTherapeuticClassId);
+
+           
 
             modelBuilder.Entity<ATCCode>()
               .Property(p => p.ATCCodeId)
@@ -75,6 +95,7 @@ namespace eHealthcare.Data
               .Property(p => p.ActiveIngredientId)
               .ValueGeneratedNever();
 
+            modelBuilder.Seed();
         }
     }
 

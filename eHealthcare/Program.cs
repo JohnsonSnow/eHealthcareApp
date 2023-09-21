@@ -5,8 +5,13 @@ using eHealthcare.Data;
 using eHealthcare.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+var dbName = Environment.GetEnvironmentVariable("DB_NAME");
+var dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
+var connectionString = $"Data Source={dbHost};Database={dbName};User Id=sa;Password={dbPassword};Persist Security Info=True;Trusted_Connection=True;Encrypt=False;MultipleActiveResultSets=true;TrustServerCertificate=True;Integrated Security=false;";
 builder.Services.AddDbContext<eHealthcareContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("eHealthcareContext") ?? throw new InvalidOperationException("Connection string 'eHealthcareContext' not found.")));
+    options.UseSqlServer(connectionString));
 
 // Add services to the container.
 
@@ -18,10 +23,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors(c => c.AddPolicy("CorsPolicy", builder =>
 {
     builder
+    .WithOrigins("https://localhost:4200", "http://localhost:4200")
     .AllowAnyMethod()
     .AllowAnyHeader()
-    .AllowCredentials()
-    .WithOrigins("http://localhost:4200");
+    .AllowCredentials();
 }));
 
 builder.Services.AddSignalR();
@@ -33,6 +38,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
 }
 
 app.UseRouting();
@@ -43,7 +49,7 @@ app.UseAuthorization();
 
 app.UseCors("CorsPolicy");
 
-app.MapHub<BroadcastHub>("/nofity");
+app.MapHub<BroadcastHub>("notify");
 app.MapControllers();
 
 app.Run();

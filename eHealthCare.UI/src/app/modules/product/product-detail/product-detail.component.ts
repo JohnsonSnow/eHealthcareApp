@@ -21,13 +21,17 @@ export class ProductDetailComponent implements OnInit {
   ngOnInit(): void {    
     const id = this.route.snapshot.paramMap.get('id');    
     if (id) {    
-      this.getProduct(id);    
+      this.getProduct(id);
+      console.log("hsjjs",this.product)
     }    
   }    
     
   getProduct(id: string) {    
     this.productService.getProduct(id).subscribe(    
-      product => this.product = product,    
+      product => {
+        console.log("ksks", product)
+        this.product = product
+      },    
       error => this.errorMessage = <any>error);    
   }    
     

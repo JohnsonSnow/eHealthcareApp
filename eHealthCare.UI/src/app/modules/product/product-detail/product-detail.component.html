@@ -8,28 +8,40 @@
     <div class="row">
       <div class="col-md-8">
         <div class="row">
-          <div class="col-md-3">Name:</div>
-          <div class="col-md-6">{{product.name}}</div>
+          <div class="col-md-4">Name:</div>
+          <div class="col-md-8">{{product.name}}</div>
         </div>
         <div class="row">
-          <div class="col-md-3">Classification:</div>
-          <div class="col-md-6">{{product.classifications}}</div>
+          <div class="col-md-4">Classification:</div>
+          <div class="col-md-8">{{product.classifications}}</div>
         </div>
         <div class="row">
-          <div class="col-md-3">Competent Authority Status:</div>
-          <div class="col-md-6">{{product.competentAuthorityStatus}}</div>
+          <div class="col-md-4">Competent Authority Status:</div>
+          <div class="col-md-8">{{product.competentAuthorityStatus}}</div>
         </div>
         <div class="row">
-          <div class="col-md-3">Internal Status:</div>
-          <div class="col-md-6">{{product.internalStatus}}</div>
+          <div class="col-md-4">Internal Status:</div>
+          <div class="col-md-8">{{product.internalStatus}}</div>
         </div>
         <div class="row">
-          <div class="col-md-3">Unit:</div>
-          <div class="col-md-6">{{product.unit}}</div>
+          <div class="col-md-4">Unit:</div>
+          <div class="col-md-8">{{product.productUnit.unitValue}}</div>
         </div>
         <div class="row">
-          <div class="col-md-3">Active Ingredients:</div>
-          <div class="col-md-6">{{product.activeIngredients}}</div>
+          <div class="col-md-4">Active Ingredients:</div>
+          <div class="col-md-8">{{product.activeIngredient.name }}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">pharmaceutical Form:</div>
+          <div class="col-md-8">{{product.pharmaceuticalForm.name}}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">therapeutic Class:</div>
+          <div class="col-md-8">{{product.therapeuticClass.name}}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">atc Code:</div>
+          <div class="col-md-8">{{product.atcCode.code}}</div>
         </div>
       </div>
     </div>

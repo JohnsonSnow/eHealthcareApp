@@ -2,6 +2,12 @@ import { Component, ElementRef, OnDestroy, OnInit, ViewChildren } from '@angular
 import { FormControlName, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { ActiveIngredient } from '../../../model/active-ingredient';
+import { ATCCode } from '../../../model/atccode';
+import { PharmaceuticalForm } from '../../../model/pharmaceutical-form';
+import { ProductUnit } from '../../../model/product-unit';
+import { TherapeuticClass } from '../../../model/therapeutic-class';
+import { ProductRelatedModelsService } from '../../../service/product-related-models.service';
 import { Product } from '../product';
 import { ProductService } from '../product.service';
 
@@ -18,6 +24,11 @@ export class ProductUpdateComponent implements OnInit, OnDestroy {
   productForm!: FormGroup;
   tranMode!: string;
   product!: Product;
+  ProductUnit: ProductUnit[] = [];
+  PharmaceuticalForm: PharmaceuticalForm[] = [];
+  ActiveIngredient: ActiveIngredient[] = [];
+  TherapeuticClass: TherapeuticClass[] = [];
+  ATCCode: ATCCode[] = [];
   private sub!: Subscription;
 
   displayMessage: { [key: string]: string } = {};
@@ -26,7 +37,14 @@ export class ProductUpdateComponent implements OnInit, OnDestroy {
   constructor(private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private productService: ProductService) {
+    private productService: ProductService,
+    private productRelatedModelService: ProductRelatedModelsService) {
+
+    this.getActiveIngredientData();
+    this.getPharmaceuticalFormData();
+    this.getProductUnitData();
+    this.getTherapeuticClassData();
+    this.getATCCodeData();
 
     this.validationMessages = {
       name: {
@@ -71,27 +89,78 @@ export class ProductUpdateComponent implements OnInit, OnDestroy {
             competentAuthorityStatus: '',
             internalStatus: '',
             unit: '',
-            activeIngredients: '',
-            pharmaceuticalForms: '',
+            activeIngredient: '',
+            pharmaceuticalForm: '',
             therapeuticClass: '',
             atcCode: '',
             activeIngredientID: 0,
             pharmaceuticalFormID: 0,
             productUnitID: 0,
+            productUnit: '',
             atcCodeID: 0,
             therapeuticClassID: 0 
           };
           this.displayProduct(product);
         }
         else {
-          this.getEmployee(id!);
+          this.getProduct(id!);
         }
       }
     );  
   }
 
 
-  getEmployee(id: string): void {
+  getPharmaceuticalFormData() {
+    this.productRelatedModelService.getPharmaceuticalForms().subscribe(
+      data => {
+        console.log(data)
+        this.PharmaceuticalForm = data;
+      },
+      error => this.errorMessage = <any>error
+    );
+  }
+
+  getProductUnitData() {
+    this.productRelatedModelService.getProductUnits().subscribe(
+      data => {
+        console.log(data)
+        this.ProductUnit = data;
+      },
+      error => this.errorMessage = <any>error
+    );
+  }
+
+  getActiveIngredientData() {
+    this.productRelatedModelService.getActiveIngredients().subscribe(
+      data => {
+        console.log(data)
+        this.ActiveIngredient = data;
+      },
+      error => this.errorMessage = <any>error
+    );
+  }
+
+  getTherapeuticClassData() {
+    this.productRelatedModelService.getTherapeuticClass().subscribe(
+      data => {
+        console.log(data)
+        this.TherapeuticClass = data;
+      },
+      error => this.errorMessage = <any>error
+    );
+  }
+
+  getATCCodeData() {
+    this.productRelatedModelService.getATCCodes().subscribe(
+      data => {
+        console.log(data)
+        this.ATCCode = data;
+      },
+      error => this.errorMessage = <any>error
+    );
+  }
+
+  getProduct(id: string): void {
     this.productService.getProduct(id)
       .subscribe(
         (product: Product) => this.displayProduct(product),
@@ -111,7 +180,20 @@ export class ProductUpdateComponent implements OnInit, OnDestroy {
     }
     this.productForm.patchValue({
       name: this.product.name,
-      
+      classifications: this.product.classifications,
+      competentAuthorityStatus: this.product.competentAuthorityStatus,
+      internalStatus: this.product.internalStatus,
+      unit: this.product.productUnit,
+      activeIngredient: '',
+      pharmaceuticalForm: '',
+      therapeuticClass: this.product.therapeuticClass,
+      atcCode: this.product.atcCode,
+      activeIngredientID: this.product.activeIngredientID,
+      pharmaceuticalFormID: this.product.pharmaceuticalFormID,
+      productUnitID: this.product.productUnitID,
+      productUnit: this.product.productUnit,
+      atcCodeID: this.product.atcCodeID,
+      therapeuticClassID: this.product.therapeuticClassID
     });
   }  
 

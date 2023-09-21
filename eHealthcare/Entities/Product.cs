@@ -5,7 +5,7 @@ namespace eHealthcare.Entities
     public class Product
     {
 
-        public Product() { }
+        //public Product() { }
         //public Product(PharmaceuticalForm pharmaceuticalForm,
         //    ActiveIngredient activeIngredient,
         //    ProductUnit productUnit,
@@ -28,26 +28,26 @@ namespace eHealthcare.Entities
 
 
         public int ActiveIngredientID { get; set; }
-        [JsonIgnore]
-        public ActiveIngredient ActiveIngredient { get; set; }
+        //[JsonIgnore]
+        public ActiveIngredient? ActiveIngredient { get; set; }
 
         public int PharmaceuticalFormID { get; set; }
-        [JsonIgnore]
+        //[JsonIgnore]
 
-        public PharmaceuticalForm PharmaceuticalForm { get; set; }
+        public PharmaceuticalForm? PharmaceuticalForm { get; set; }
         public int ProductUnitID { get; set; }
-        [JsonIgnore]
+        //[JsonIgnore]
 
-        public ProductUnit ProductUnit { get; set; }
+        public ProductUnit? ProductUnit { get; set; }
 
         public int ATCCodeID { get; set; }
-        [JsonIgnore]
+        //[JsonIgnore]
 
-        public ATCCode ATCCode { get; set; }
+        public ATCCode? ATCCode { get; set; }
 
         public int TherapeuticClassID { get; set; }
-        [JsonIgnore]
+       // [JsonIgnore]
 
-        public TherapeuticClass TherapeuticClass { get; set; }
+        public TherapeuticClass? TherapeuticClass { get; set; }
     }
 }

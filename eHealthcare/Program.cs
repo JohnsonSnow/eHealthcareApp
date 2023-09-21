@@ -1,8 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using eHealthcare.Data;
-using eHealthcare.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 

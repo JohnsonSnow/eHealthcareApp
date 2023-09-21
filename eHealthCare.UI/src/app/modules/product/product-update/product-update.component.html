@@ -30,8 +30,8 @@
         <div class="col-md-7">
           <select id="activeIngredientsId" formControlName="activeIngredientID" class="form-select">
             <option disabled selected>Select an Option</option>
-            <option value="1">ml(s)</option>
-            <option value="2">mg(s)</option>
+            <option *ngFor="let item of ActiveIngredient" [value]="item.activeIngredientId">{{item.name}}</option>
+
           </select>
 
         </div>
@@ -43,8 +43,7 @@
         <div class="col-md-7">
           <select id="pharmaceuticalFormsId" formControlName="pharmaceuticalFormID" class="form-select">
             <option disabled selected>Select an Option</option>
-            <option value="1">ml(s)</option>
-            <option value="2">mg(s)</option>
+            <option *ngFor="let item of PharmaceuticalForm" [value]="item.pharmaceuticalFormId">{{item.name}}</option>
           </select>
 
         </div>
@@ -56,8 +55,7 @@
         <div class="col-md-7">
           <select id="therapeuticClassId" formControlName="therapeuticClassID" class="form-select">
             <option disabled selected>Select an Option</option>
-            <option value="1">ml(s)</option>
-            <option value="2">mg(s)</option>
+            <option *ngFor="let item of TherapeuticClass" [value]="item.therapeuticClassId">{{item.name}}</option>
           </select>
 
         </div>
@@ -69,8 +67,8 @@
         <div class="col-md-7">
           <select id="atcCodeId" formControlName="atcCodeID" class="form-select">
             <option disabled selected>Select an Option</option>
-            <option value="1">ml(s)</option>
-            <option value="2">mg(s)</option>
+            <option *ngFor="let item of ATCCode" [value]="item.atcCodeId">{{item.code}}</option>
+
           </select>
 
         </div>
@@ -122,8 +120,7 @@
         <div class="col-md-7">
           <select id="unitId" formControlName="productUnitID" aria-label="Select Unit" class="form-select">
             <option selected>Select an Option</option>
-            <option value="1">ml(s)</option>
-            <option value="2">mg(s)</option>
+            <option *ngFor="let item of ProductUnit" [value]="item.productUnitId">{{item.unitValue}}</option>
           </select>
 
         </div>

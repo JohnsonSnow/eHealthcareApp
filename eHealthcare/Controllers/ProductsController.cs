@@ -35,7 +35,14 @@ namespace eHealthcare.Controllers
           {
               return NotFound();
           }
-            return await _context.Product.Include("TherapeuticClass").ToListAsync();
+          var product = await _context.Product
+                .Include(p => p.TherapeuticClass)
+                .Include(p => p.ATCCode)
+                .Include(p => p.PharmaceuticalForm)
+                .Include(p => p.ActiveIngredient)
+                .Include(p => p.ProductUnit)
+                .ToListAsync();
+            return product;
         }
 
         // GET: api/Products/5
@@ -47,7 +54,11 @@ namespace eHealthcare.Controllers
               return NotFound();
           }
             var product = await _context.Product.FindAsync(id);
-
+            product!.ActiveIngredient = await _context.ActiveIngredients.FindAsync(product.ActiveIngredientID);
+            product!.PharmaceuticalForm = await _context.PharmaceuticalForms.FindAsync(product.PharmaceuticalFormID);
+            product!.TherapeuticClass = await _context.TherapeuticClass.FindAsync(product.TherapeuticClassID);
+            product!.ProductUnit = await _context.ProductUnits.FindAsync(product.ProductUnitID);
+            product!.ATCCode = await _context.ATCCode.FindAsync(product.ATCCodeID);
             if (product == null)
             {
                 return NotFound();

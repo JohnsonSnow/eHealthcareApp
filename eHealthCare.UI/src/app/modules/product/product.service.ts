@@ -74,13 +74,14 @@ export class ProductService {
       competentAuthorityStatus: '',
       internalStatus: '',
       unit: '',
-      activeIngredients: '',
-      pharmaceuticalForms: '',
+      activeIngredient: '',
+      pharmaceuticalForm: '',
       therapeuticClass: '',
       atcCode: '',
       activeIngredientID: 0,
       pharmaceuticalFormID: 0,
       productUnitID: 0,
+      productUnit: '',
       atcCodeID: 0,
       therapeuticClassID: 0 
     }

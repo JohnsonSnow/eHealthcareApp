@@ -40,17 +40,17 @@
           <tr *ngFor="let product of filteredProducts">
             <td>
               <a [routerLink]="['/products', product.id]">
-                {{ product.activeIngredients }}
+                {{ product.activeIngredient.name }}
               </a>
             </td>
-            <td>{{ product.pharmaceuticalForms }}</td>
-            <td>{{ product.therapeuticClass }}</td>
-            <td>{{ product.atcCode }}</td>
+            <td>{{ product.pharmaceuticalForm.name }}</td>
+            <td>{{ product.therapeuticClass.name }}</td>
+            <td>{{ product.atcCode.code }}</td>
             <td>{{ product.name }}</td>
             <td>{{ product.classifications }}</td>
             <td>{{ product.competentAuthorityStatus }}</td>
             <td>{{ product.internalStatus }}</td>
-            <td>{{ product.unit}} </td>
+            <td>{{ product.productUnit.unitValue}} </td>
             <td>
               <button class="btn btn-outline-primary btn-sm"
                       [routerLink]="['/products', product.id, 'update']">

@@ -44,7 +44,9 @@ Provide step-by-step instructions on how to set up and run both the .NET and Ang
    ```bash
    dotnet run
 
-6. Open a web browser and navigate to http://localhost:5000 to access the .NET application.
+6. Run the .NET Application on Docker From your visual studio.
+
+6. Open a web browser and navigate to url to access the .NET application.
 
 
 ### Running the Angular Project
@@ -60,5 +62,7 @@ Provide step-by-step instructions on how to set up and run both the .NET and Ang
 3. Start the Angular development server:
    ```bash
    npm start
+
+4. Update the environment variable (baseUrl) on the environment.ts to point to the api port.
 
 5. Open a web browser and navigate to http://localhost:4200 to access the Angular application.

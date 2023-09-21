@@ -5,19 +5,6 @@ namespace eHealthcare.Entities
     public class Product
     {
 
-        //public Product() { }
-        //public Product(PharmaceuticalForm pharmaceuticalForm,
-        //    ActiveIngredient activeIngredient,
-        //    ProductUnit productUnit,
-        //    ATCCode aTCCode,
-        //    TherapeuticClass therapeuticClass)
-        //{
-        //    PharmaceuticalForm = pharmaceuticalForm;
-        //    ActiveIngredient = activeIngredient;
-        //    ProductUnit = productUnit;
-        //    ATCCode = aTCCode;
-        //    TherapeuticClass = therapeuticClass;
-        //}
 
         public int Id { get; set; }
        

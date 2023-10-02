@@ -10,10 +10,10 @@ namespace eHealthcare.Repositories
     public class ProductRepository : IProductRepository
     {
         private readonly eHealthcareContext _context;
-        private readonly ILogger<ProductService> _logger;
+        private readonly ILogger<ProductRepository> _logger;
         private readonly IHubContext<BroadcastHub, IHubClient> _hubContext;
 
-        public ProductRepository(eHealthcareContext context, ILogger<ProductService> logger, IHubContext<BroadcastHub, IHubClient> hubContext)
+        public ProductRepository(eHealthcareContext context, ILogger<ProductRepository> logger, IHubContext<BroadcastHub, IHubClient> hubContext)
         {
             _context = context;
             _logger = logger;

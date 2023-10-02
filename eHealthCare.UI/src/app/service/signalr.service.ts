@@ -28,6 +28,7 @@ export class SignalrService {
   public addProductListener = () => {
     this.hubConnection.on('BroadcastMessage', (notification: Notification) => {
       this.showNotification(notification);
+      console.log('bbdg',notification)
       this.productService.getProducts();
     });
   }

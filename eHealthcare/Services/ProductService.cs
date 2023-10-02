@@ -14,13 +14,11 @@ namespace eHealthcare.Services
     {
         private readonly IProductRepository _productrepository;
         private readonly ILoggingService _logger;
-        private readonly IHubContext<BroadcastHub, IHubClient> _hubContext;
 
 
-        public ProductService(IProductRepository productrepository, IHubContext<BroadcastHub, IHubClient> hubContext,  ILoggingService logger)
+        public ProductService(IProductRepository productrepository,  ILoggingService logger)
         {
             _productrepository = productrepository;
-            _hubContext = hubContext;
             _logger = logger;
         }
 

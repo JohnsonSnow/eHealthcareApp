@@ -19,16 +19,13 @@ namespace eHealthcare.Tests.Controllers
         private readonly ProductService _sut;
         private readonly Mock<IProductRepository> _productRepositoryMock = new Mock<IProductRepository>();
         private readonly Mock<ILoggingService> _loggerMock = new Mock<ILoggingService>();
-        //private readonly Mock<IHubContext> _hubClientMock = new Mock<IHubContext>();
 
-        private readonly Mock<eHealthcareContext> _dbcontextMock = new Mock<eHealthcareContext>();
-        //private readonly Mock<ILogger<ProductService>> _loggerMock = new Mock<ILogger<ProductService>>();
         private readonly Mock<IHubContext<BroadcastHub, IHubClient>> _hubContextMock = new Mock<IHubContext<BroadcastHub, IHubClient>>();
 
 
         public ProductControllerTests()
         {
-            _sut = new ProductService(_productRepositoryMock.Object, _hubContextMock.Object, _loggerMock.Object);
+            _sut = new ProductService(_productRepositoryMock.Object, _loggerMock.Object);
         }
 
         [Fact]

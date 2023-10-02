@@ -1,13 +1,37 @@
 ﻿using eHealthcare.Dto;
 using eHealthcare.Entities;
+using eHealthcare.Repositories.Interfaces;
+using eHealthcare.Repositories;
+using Microsoft.CodeAnalysis;
 
 namespace eHealthcare.Services
 {
     public class ActiveIngredientService : IActiveIngredientService
     {
-        public Task<ActiveIngredient> AddAsync(ActiveIngredientDTO modelDto)
+        private readonly IActiveIngredientRepository _activeIngredientRepository;
+        private readonly ILoggingService _logger;
+
+        public ActiveIngredientService(IActiveIngredientRepository activeIngredientRepository, ILoggingService logger)
         {
-            throw new NotImplementedException();
+            _activeIngredientRepository = activeIngredientRepository;
+            _logger = logger;
+        }
+
+        public async Task<ActiveIngredient> AddAsync(ActiveIngredientDTO modelDto)
+        {
+            try
+            {
+
+                var result = await _activeIngredientRepository.AddAsync(modelDto);
+                _logger.LogInformation($"item has been created successfully with following details: {result}");
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(ex.Message.ToString(), "An error occured when adding item.");
+                throw;
+            }
         }
 
         public bool CheckExists(int id)
@@ -20,14 +44,16 @@ namespace eHealthcare.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<ActiveIngredient>> GetAllAsync()
+        public async Task<List<ActiveIngredient>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var result = await _activeIngredientRepository.GetAllAsync();
+            return result;
         }
 
-        public Task<ActiveIngredient> GetByIdAsync(int id)
+        public async Task<ActiveIngredient> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var result = await _activeIngredientRepository.GetByIdAsync(id);
+            return result;
         }
 
         public Task<int> UpdateAsync(int id, ActiveIngredient model)

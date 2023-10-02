@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using eHealthcare.Data;
 using eHealthcare.Entities;
+using eHealthcare.Services;
+using eHealthcare.Dto;
 
 namespace eHealthcare.Controllers
 {
@@ -15,10 +17,14 @@ namespace eHealthcare.Controllers
     public class TherapeuticClassController : ControllerBase
     {
         private readonly eHealthcareContext _context;
+        private readonly ILogger<PharmaceuticalFormsController> _logger;
+        private readonly ITherapeuticalClassService _therapeuticalClassService;
 
-        public TherapeuticClassController(eHealthcareContext context)
+        public TherapeuticClassController(eHealthcareContext context, ILogger<PharmaceuticalFormsController> logger, ITherapeuticalClassService therapeuticalClassService)
         {
             _context = context;
+            _logger = logger;
+            _therapeuticalClassService = therapeuticalClassService;
         }
 
         // GET: api/TherapeuticClass
@@ -84,16 +90,16 @@ namespace eHealthcare.Controllers
         // POST: api/TherapeuticClass
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TherapeuticClass>> PostTherapeuticClass(TherapeuticClass therapeuticClass)
+        public async Task<ActionResult<TherapeuticClass>> PostTherapeuticClass(TherapeuticClassDTO therapeuticClass)
         {
           if (_context.TherapeuticClass == null)
           {
               return Problem("Entity set 'eHealthcareContext.TherapeuticClass'  is null.");
           }
-            _context.TherapeuticClass.Add(therapeuticClass);
-            await _context.SaveChangesAsync();
+            var result = await _therapeuticalClassService.AddAsync(therapeuticClass);
 
-            return CreatedAtAction("GetTherapeuticClass", new { id = therapeuticClass.TherapeuticClassId }, therapeuticClass);
+
+            return CreatedAtAction("GetTherapeuticClass", new { id = result.TherapeuticClassId }, result);
         }
 
         // DELETE: api/TherapeuticClass/5

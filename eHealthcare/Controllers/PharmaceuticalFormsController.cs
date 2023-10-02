@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using eHealthcare.Data;
 using eHealthcare.Entities;
+using eHealthcare.Services;
 
 namespace eHealthcare.Controllers
 {
@@ -15,10 +16,14 @@ namespace eHealthcare.Controllers
     public class PharmaceuticalFormsController : ControllerBase
     {
         private readonly eHealthcareContext _context;
+        private readonly ILogger<PharmaceuticalFormsController> _logger;
+        private readonly IPharmaceuticalFormService _pharmaceuticalFormService;
 
-        public PharmaceuticalFormsController(eHealthcareContext context)
+        public PharmaceuticalFormsController(eHealthcareContext context, ILogger<PharmaceuticalFormsController> logger, IPharmaceuticalFormService pharmaceuticalFormService)
         {
             _context = context;
+            _logger = logger;
+            _pharmaceuticalFormService = pharmaceuticalFormService;
         }
 
         // GET: api/PharmaceuticalForms
@@ -90,10 +95,10 @@ namespace eHealthcare.Controllers
           {
               return Problem("Entity set 'eHealthcareContext.PharmaceuticalForms'  is null.");
           }
-            _context.PharmaceuticalForms.Add(pharmaceuticalForm);
-            await _context.SaveChangesAsync();
+            var result = await _pharmaceuticalFormService.AddAsync(pharmaceuticalForm);
 
-            return CreatedAtAction("GetPharmaceuticalForm", new { id = pharmaceuticalForm.PharmaceuticalFormId }, pharmaceuticalForm);
+
+            return CreatedAtAction("GetPharmaceuticalForm", new { id = result.PharmaceuticalFormId }, result);
         }
 
         // DELETE: api/PharmaceuticalForms/5

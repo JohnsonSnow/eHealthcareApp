@@ -16,9 +16,24 @@ namespace eHealthcare.Repositories
             _logger = logger;
         }
 
-        public Task<TherapeuticClass> AddAsync(TherapeuticClassDTO modelDto)
+        public async Task<TherapeuticClass> AddAsync(TherapeuticClassDTO modelDto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var model = new TherapeuticClass
+                {
+                    Name = modelDto.Name,
+                };
+                _context.TherapeuticClass.Add(model);
+                await _context.SaveChangesAsync();
+
+                return model;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(ex.Message.ToString(), $"An error occured!");
+                throw;
+            }
         }
 
         public bool CheckExists(int id)

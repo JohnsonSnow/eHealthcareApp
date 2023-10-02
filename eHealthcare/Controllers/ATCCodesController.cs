@@ -9,6 +9,8 @@ using eHealthcare.Data;
 using eHealthcare.Entities;
 using eHealthcare.Dto;
 using Mapster;
+using eHealthcare.Services;
+using Microsoft.AspNetCore.SignalR;
 
 namespace eHealthcare.Controllers
 {
@@ -17,10 +19,16 @@ namespace eHealthcare.Controllers
     public class ATCCodesController : ControllerBase
     {
         private readonly eHealthcareContext _context;
+        private readonly IHubContext<BroadcastHub, IHubClient> _hubContext;
+        private readonly ILogger<ATCCodesController> _logger;
+        private readonly IAtcCodeService _atcCodeService;
 
-        public ATCCodesController(eHealthcareContext context)
+        public ATCCodesController(eHealthcareContext context, IHubContext<BroadcastHub, IHubClient> hubContext, ILogger<ATCCodesController> logger, IAtcCodeService atcCodeService)
         {
             _context = context;
+            _hubContext = hubContext;
+            _logger = logger;
+            _atcCodeService = atcCodeService;
         }
 
         // GET: api/ATCCodes
@@ -86,26 +94,15 @@ namespace eHealthcare.Controllers
         // POST: api/ATCCodes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ATCCode>> PostATCCode(ACTCodeDTO aTCCode)
+        public async Task<ActionResult<ATCCode>> PostATCCode(ATCCodeDTO aTCCode)
         {
-              if (_context.ATCCode == null)
-              {
-                  return Problem("Entity set 'eHealthcareContext.ATCCode'  is null.");
-              }
-
-            //var config = new TypeAdapterConfig();
-            var atcCodeModel = new ATCCode
+            if (_context.ATCCode == null)
             {
-                ATCCodeId = aTCCode.ATCCodeId,
-                Code = aTCCode.Code,
-            };
-
-            //  var actcodeResponse = aTCCode.Adapt<atcCodeModel>();
-
-            _context.ATCCode.Add(atcCodeModel);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetATCCode", new { id = aTCCode.ATCCodeId }, aTCCode);
+                return Problem("Entity set 'eHealthcareContext.ATCCode'  is null.");
+            }
+            var result = await _atcCodeService.AddAsync(aTCCode);
+           
+            return CreatedAtAction("GetATCCode", new { id = result.ATCCodeId }, result);
         }
 
         // DELETE: api/ATCCodes/5

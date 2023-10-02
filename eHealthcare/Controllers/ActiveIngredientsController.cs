@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using eHealthcare.Data;
 using eHealthcare.Entities;
+using eHealthcare.Dto;
+using eHealthcare.Services;
+using Microsoft.AspNetCore.SignalR;
 
 namespace eHealthcare.Controllers
 {
@@ -15,10 +18,15 @@ namespace eHealthcare.Controllers
     public class ActiveIngredientsController : ControllerBase
     {
         private readonly eHealthcareContext _context;
-
-        public ActiveIngredientsController(eHealthcareContext context)
+        private readonly IHubContext<BroadcastHub, IHubClient> _hubContext;
+        private readonly ILogger<ActiveIngredientsController> _logger;
+        private readonly IActiveIngredientService _activeIngredientService;
+        public ActiveIngredientsController(eHealthcareContext context, IHubContext<BroadcastHub, IHubClient> hubContext, ILogger<ActiveIngredientsController> logger, IActiveIngredientService activeIngredientService)
         {
             _context = context;
+            _hubContext = hubContext;
+            _logger = logger;
+            _activeIngredientService = activeIngredientService;
         }
 
         // GET: api/ActiveIngredients
@@ -84,16 +92,18 @@ namespace eHealthcare.Controllers
         // POST: api/ActiveIngredients
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ActiveIngredient>> PostActiveIngredient(ActiveIngredient activeIngredient)
+        public async Task<ActionResult<ActiveIngredient>> PostActiveIngredient(ActiveIngredientDTO activeIngredientDTo)
         {
-          if (_context.ActiveIngredients == null)
-          {
-              return Problem("Entity set 'eHealthcareContext.ActiveIngredients'  is null.");
-          }
-            _context.ActiveIngredients.Add(activeIngredient);
-            await _context.SaveChangesAsync();
+            _logger.LogInformation($"starting add item process with this product Details: {activeIngredientDTo}");
 
-            return CreatedAtAction("GetActiveIngredient", new { id = activeIngredient.ActiveIngredientId }, activeIngredient);
+            if (_context.ActiveIngredients == null)
+            {
+                return Problem("Entity set 'eHealthcareContext.ActiveIngredients'  is null.");
+            }
+            var result = await _activeIngredientService.AddAsync(activeIngredientDTo);
+          
+
+            return CreatedAtAction("GetActiveIngredient", new { id = result.ActiveIngredientId }, result);
         }
 
         // DELETE: api/ActiveIngredients/5

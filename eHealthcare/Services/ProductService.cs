@@ -28,7 +28,7 @@ namespace eHealthcare.Services
             {
                
               var product = await _productrepository.AddproductAsync(productDto);
-              _logger.LogInformation($"product as been created successfully with following details: {product}");
+              _logger.LogInformation($"product has been created successfully with following details: {product}");
               return product;
 
             }

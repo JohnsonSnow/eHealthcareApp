@@ -1,29 +1,33 @@
 ﻿using eHealthcare.Data;
 using eHealthcare.Dto;
 using eHealthcare.Entities;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 
 namespace eHealthcare.Repositories
 {
-    public class ProductUnitRepository : IProductUnitRepository
+    public class AtcCodeRepository : IAtcCodeRepository
     {
         private readonly eHealthcareContext _context;
-        private readonly ILogger<ProductUnitRepository> _logger;
+        private readonly ILogger<AtcCodeRepository> _logger;
+        private readonly IHubContext<BroadcastHub, IHubClient> _hubContext;
 
-        public ProductUnitRepository(eHealthcareContext context, ILogger<ProductUnitRepository> logger)
+        public AtcCodeRepository(eHealthcareContext context, ILogger<AtcCodeRepository> logger, IHubContext<BroadcastHub, IHubClient> hubContext)
         {
             _context = context;
             _logger = logger;
+            _hubContext = hubContext;
         }
 
-        public async Task<ProductUnit> AddAsync(ProductUnitDTO modelDto)
+        public async Task<ATCCode> AddAsync(ATCCodeDTO modelDto)
         {
             try
             {
-                var model = new ProductUnit
+                var model = new ATCCode
                 {
-                    UnitValue = modelDto.UnitValue,
+                    Code = modelDto.Code,
                 };
-                _context.ProductUnits.Add(model);
+                _context.ATCCode.Add(model);
                 await _context.SaveChangesAsync();
 
                 return model;
@@ -45,17 +49,17 @@ namespace eHealthcare.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<ProductUnit>> GetAllAsync()
+        public Task<List<ATCCode>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task<ProductUnit> GetByIdAsync(int id)
+        public Task<ATCCode> GetByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<int> UpdateAsync(int id, ProductUnit model)
+        public Task<int> UpdateAsync(int id, ATCCode model)
         {
             throw new NotImplementedException();
         }

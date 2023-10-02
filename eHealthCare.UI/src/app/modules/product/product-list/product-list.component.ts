@@ -37,14 +37,12 @@ export class ProductListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //this.getProductData();
    
   }
 
   getProductData() {
     this.productService.getProducts().subscribe(
       products => {
-        console.log(products)
         this.products = products;
         this.filteredProducts = this.products;
       },

@@ -24,6 +24,21 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ILoggingService, LoggingService>();
 
+builder.Services.AddScoped<IActiveIngredientService, ActiveIngredientService>();
+builder.Services.AddScoped<IActiveIngredientRepository, ActiveIngredientRepository>();
+
+builder.Services.AddScoped<IProductUnitRepository, ProductUnitRepository>();
+builder.Services.AddScoped<IProductUnitService, ProductUnitService>();
+
+builder.Services.AddScoped<IAtcCodeRepository, AtcCodeRepository>();
+builder.Services.AddScoped<IAtcCodeService, AtcCodeService>();
+
+builder.Services.AddScoped<IPharmaceuticalFormRepository, PharmaceuticalFormRepository>();
+builder.Services.AddScoped<IPharmaceuticalFormService, PharmaceuticalFormService>();
+
+builder.Services.AddScoped<ITherapeuticalClassRepository, TherapeuticalClassRepository>();
+builder.Services.AddScoped<ITherapeuticalClassService, TherapeuticalClassService>();
+
 builder.Services.AddCors(c => c.AddPolicy("CorsPolicy", builder =>
 {
     builder

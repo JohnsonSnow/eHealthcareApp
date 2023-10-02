@@ -15,20 +15,16 @@ namespace eHealthcare.Entities
 
 
         public int ActiveIngredientID { get; set; }
-        //[JsonIgnore]
         public ActiveIngredient? ActiveIngredient { get; set; }
 
         public int PharmaceuticalFormID { get; set; }
-        //[JsonIgnore]
 
         public PharmaceuticalForm? PharmaceuticalForm { get; set; }
         public int ProductUnitID { get; set; }
-        //[JsonIgnore]
 
         public ProductUnit? ProductUnit { get; set; }
 
         public int ATCCodeID { get; set; }
-        //[JsonIgnore]
 
         public ATCCode? ATCCode { get; set; }
 

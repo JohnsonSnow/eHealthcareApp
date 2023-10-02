@@ -48,12 +48,10 @@ export class ProductService {
   }
 
   updateProduct(product: Product): Observable<Product> {
-    debugger
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const url = `${this.productUrl}/${product.id}`;
     return this.http.put<Product>(url, product, { headers: headers })
       .pipe(
-        map(() => product),
         catchError(this.handleError<Product>('updateProduct'))
       );
   } 

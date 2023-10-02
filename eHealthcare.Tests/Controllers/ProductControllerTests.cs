@@ -2,255 +2,96 @@ using eHealthcare.Controllers;
 using eHealthcare.Data;
 using eHealthcare.Dto;
 using eHealthcare.Entities;
+using eHealthcare.Repositories;
+using eHealthcare.Repositories.Interfaces;
+using eHealthcare.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace eHealthcare.Tests.Controllers
 {
     public class ProductControllerTests
     {
+        private readonly ProductService _sut;
+        private readonly Mock<IProductRepository> _productRepositoryMock = new Mock<IProductRepository>();
+        private readonly Mock<ILoggingService> _loggerMock = new Mock<ILoggingService>();
+        //private readonly Mock<IHubContext> _hubClientMock = new Mock<IHubContext>();
 
-        [Fact]
-        public async Task test_returns_all_products()
+        private readonly Mock<eHealthcareContext> _dbcontextMock = new Mock<eHealthcareContext>();
+        //private readonly Mock<ILogger<ProductService>> _loggerMock = new Mock<ILogger<ProductService>>();
+        private readonly Mock<IHubContext<BroadcastHub, IHubClient>> _hubContextMock = new Mock<IHubContext<BroadcastHub, IHubClient>>();
+
+
+        public ProductControllerTests()
         {
-            // Arrange
-            var mockContext = new Mock<eHealthcareContext>();
-            mockContext.SetupGet(c => c.Product).Returns((DbSet<Product>)null);
-
-            var mockHubContext = new Mock<IHubContext<BroadcastHub, IHubClient>>();
-
-            var controller = new ProductsController(mockContext.Object, mockHubContext.Object);
-
-            // Act
-            var result = await controller.GetProduct();
-
-            // Assert
-            var notFoundResult = Assert.IsType<NotFoundResult>(result.Result);
+            _sut = new ProductService(_productRepositoryMock.Object, _hubContextMock.Object, _loggerMock.Object);
         }
 
-        //// returns a specific product
-        //[Fact]
-        //public async Task test_returns_specific_product()
-        //{
-        //    // Arrange
-        //    var productId = 1;
-        //    var product = new Product { Id = productId, Name = "Product 1" };
-        //    var mockContext = new Mock<eHealthcareContext>();
-        //    mockContext.Setup(c => c.Product.FindAsync(productId)).ReturnsAsync(product);
-        //    var controller = new ProductsController(mockContext.Object, null);
-
-        //    // Act
-        //    var result = await controller.GetProduct(productId);
-
-        //    // Assert
-        //    Assert.Equal(product, result.Value);
-        //}
-
-        //// updates a product
-        //[Fact]
-        //public async Task test_updates_product()
-        //{
-        //    // Arrange
-        //    var productId = 1;
-        //    var product = new Product { Id = productId, Name = "Product 1" };
-        //    var mockContext = new Mock<eHealthcareContext>();
-        //    mockContext.Setup(c => c.Product.FindAsync(productId)).ReturnsAsync(product);
-
-        //    var mockHubContext = new Mock<IHubContext<BroadcastHub, IHubClient>>();
-
-        //    var controller = new ProductsController(mockContext.Object, mockHubContext.Object);
-
-        //    // Act
-        //    var result = await controller.PutProduct(productId, product);
-
-        //    // Assert
-        //    Assert.IsType<NoContentResult>(result);
-        //}
-
-        //// returns 404 if no products exist
-        //[Fact]
-        //public async Task test_returns_404_if_no_products_exist()
-        //{
-        //    // Arrange
-        //    var products = new List<Product>();
-        //    var mockContext = new Mock<eHealthcareContext>();
-        //    mockContext.Setup(c => c.Product).Returns((DbSet<Product>)null);
-        //    var controller = new ProductsController(mockContext.Object, null);
-
-        //    // Act
-        //    var result = await controller.GetProduct();
-
-        //    // Assert
-        //    Assert.IsType<NotFoundResult>(result.Result);
-        //}
-
-        //// returns 404 if product does not exist
-        //[Fact]
-        //public async Task test_returns_404_if_product_does_not_exist()
-        //{
-        //    // Arrange
-        //    var productId = 1;
-        //    var mockContext = new Mock<eHealthcareContext>();
-        //    mockContext.Setup(c => c.Product.FindAsync(productId)).ReturnsAsync((Product)null);
-        //    var controller = new ProductsController(mockContext.Object, null);
-
-        //    // Act
-        //    var result = await controller.GetProduct(productId);
-
-        //    // Assert
-        //    Assert.IsType<NotFoundResult>(result.Result);
-        //}
-
-        // returns 400 if id in url does not match id in product object
         [Fact]
-        public async Task test_returns_400_if_id_mismatch()
+        public async Task GetProductByIdAsync_ShouldReturnProduct_WhenProductExist()
         {
             // Arrange
             var productId = 1;
-            var product = new Product { Id = 2, Name = "Product 1" };
-            var mockContext = new Mock<eHealthcareContext>();
-            var controller = new ProductsController(mockContext.Object, null);
-
-            // Act
-            var result = await controller.PutProduct(productId, product);
-
-            // Assert
-            Assert.IsType<BadRequestResult>(result);
-        }
-
-
-        [Fact]
-        public async Task GetProduct_ReturnsNotFound_WhenContextIsNull()
-        {
-            // Arrange
-            var mockContext = new Mock<eHealthcareContext>();
-            mockContext.SetupGet(c => c.Product).Returns((DbSet<Product>)null);
-
-            var mockHubContext = new Mock<IHubContext<BroadcastHub, IHubClient>>();
-
-            var controller = new ProductsController(mockContext.Object, mockHubContext.Object);
-
-            // Act
-            var result = await controller.GetProduct();
-
-            // Assert
-            var notFoundResult = Assert.IsType<NotFoundResult>(result.Result);
-        }
-
-        [Fact]
-        public async Task GetProductById_ReturnsNotFound_WhenProductNotFound()
-        {
-            // Arrange
-            var products = new List<Product>
+            var productDto = new Product
             {
-                new Product { Id = 1, Name = "Product 1" },
-                new Product { Id = 2, Name = "Product 2" }
-            }.AsQueryable();
-
-            var mockDbSet = new Mock<DbSet<Product>>();
-            mockDbSet.As<IQueryable<Product>>().Setup(m => m.Provider).Returns(products.Provider);
-            mockDbSet.As<IQueryable<Product>>().Setup(m => m.Expression).Returns(products.Expression);
-            mockDbSet.As<IQueryable<Product>>().Setup(m => m.ElementType).Returns(products.ElementType);
-            mockDbSet.As<IQueryable<Product>>().Setup(m => m.GetEnumerator()).Returns(products.GetEnumerator());
-
-            var mockContext = new Mock<eHealthcareContext>();
-            mockContext.Setup(c => c.Product).Returns(mockDbSet.Object);
-
-            var mockHubContext = new Mock<IHubContext<BroadcastHub, IHubClient>>();
-
-            var controller = new ProductsController(mockContext.Object, mockHubContext.Object);
+                Id = productId,
+            };
+            _productRepositoryMock.Setup(x => x.GetProductByIdAsync(productId)).ReturnsAsync(productDto);
 
             // Act
-            var result = await controller.GetProduct(3); // Product with ID 3 doesn't exist
+            var product = await _sut.GetProductByIdAsync(productId);
 
             // Assert
-            var notFoundResult = Assert.IsType<NotFoundResult>(result.Result);
+            Assert.Equal(product.Id, productId);
         }
 
         [Fact]
-        public async Task PutProduct_ReturnsBadRequest_WhenIdMismatch()
+        public async Task GetProductByIdAsync_ShouldReturnNoProduct_WhenProductDoesNotExist()
         {
             // Arrange
-            var products = new List<Product>
+            _productRepositoryMock.Setup(x => x.GetProductByIdAsync(It.IsAny<int>())).ReturnsAsync( () => null);
+
+            // Act
+            var product = await _sut.GetProductByIdAsync(0);
+
+            // Assert
+            Assert.Null(product);
+        }
+
+       [Fact]
+       public async Task GetProductsAsync_ShouldReturnListOfProduct_WhenProductExist()
+       {
+            // Arrange
+            var ListOfProducts = new List<Product>();
+            _productRepositoryMock.Setup(x => x.GetProductsAsync()).ReturnsAsync(ListOfProducts);
+
+            // Act
+            var products = await _sut.GetProductsAsync();
+
+            // Assert
+            Assert.NotNull(products);
+       }
+
+        [Fact]
+        public async Task AddproductAsync_ShouldCreateNewProduct_WhenProductCreationIsSuccessful()
+        {
+            // Arrange
+            var productDto = new ProductDTO
             {
-                new Product { Id = 1, Name = "Product 1" }
-            }.AsQueryable();
-
-            var mockDbSet = new Mock<DbSet<Product>>();
-            mockDbSet.As<IQueryable<Product>>().Setup(m => m.Provider).Returns(products.Provider);
-            mockDbSet.As<IQueryable<Product>>().Setup(m => m.Expression).Returns(products.Expression);
-            mockDbSet.As<IQueryable<Product>>().Setup(m => m.ElementType).Returns(products.ElementType);
-            mockDbSet.As<IQueryable<Product>>().Setup(m => m.GetEnumerator()).Returns(products.GetEnumerator());
-
-            var mockContext = new Mock<eHealthcareContext>();
-            mockContext.Setup(c => c.Product).Returns(mockDbSet.Object);
-
-            var mockHubContext = new Mock<IHubContext<BroadcastHub, IHubClient>>();
-
-            var controller = new ProductsController(mockContext.Object, mockHubContext.Object);
+                Id = 1,
+            };
+            var product = new Product();
+            _productRepositoryMock.Setup(x => x.AddproductAsync(productDto)).ReturnsAsync(product);
 
             // Act
-            var result = await controller.PutProduct(2, new Product { Id = 1, Name = "Updated Product" }); // Mismatched IDs
+            var result = await _sut.AddproductAsync(productDto);
 
             // Assert
-            var badRequestResult = Assert.IsType<BadRequestResult>(result);
-        }
-
-        [Fact]
-        public async Task PostProduct_ReturnsCreatedResponse()
-        {
-            // Arrange
-            var products = new List<Product>().AsQueryable();
-
-            var mockDbSet = new Mock<DbSet<Product>>();
-            mockDbSet.As<IQueryable<Product>>().Setup(m => m.Provider).Returns(products.Provider);
-            mockDbSet.As<IQueryable<Product>>().Setup(m => m.Expression).Returns(products.Expression);
-            mockDbSet.As<IQueryable<Product>>().Setup(m => m.ElementType).Returns(products.ElementType);
-            mockDbSet.As<IQueryable<Product>>().Setup(m => m.GetEnumerator()).Returns(products.GetEnumerator());
-
-            var mockContext = new Mock<eHealthcareContext>();
-            mockContext.Setup(c => c.Product).Returns(mockDbSet.Object);
-
-            var mockHubContext = new Mock<IHubContext<BroadcastHub, IHubClient>>();
-
-            var controller = new ProductsController(mockContext.Object, mockHubContext.Object);
-
-            // Act
-            var result = await controller.PostProduct(new ProductDTO { Id = 1, Name = "New Product" });
-
-            // Assert
-            var createdResponse = Assert.IsType<CreatedAtActionResult>(result.Result);
-        }
-
-        [Fact]
-        public async Task DeleteProduct_ReturnsNotFound_WhenProductNotFound()
-        {
-            // Arrange
-            var products = new List<Product>
-            {
-                new Product { Id = 1, Name = "Product 1" }
-            }.AsQueryable();
-
-            var mockDbSet = new Mock<DbSet<Product>>();
-            mockDbSet.As<IQueryable<Product>>().Setup(m => m.Provider).Returns(products.Provider);
-            mockDbSet.As<IQueryable<Product>>().Setup(m => m.Expression).Returns(products.Expression);
-            mockDbSet.As<IQueryable<Product>>().Setup(m => m.ElementType).Returns(products.ElementType);
-            mockDbSet.As<IQueryable<Product>>().Setup(m => m.GetEnumerator()).Returns(products.GetEnumerator());
-
-            var mockContext = new Mock<eHealthcareContext>();
-            mockContext.Setup(c => c.Product).Returns(mockDbSet.Object);
-
-            var mockHubContext = new Mock<IHubContext<BroadcastHub, IHubClient>>();
-
-            var controller = new ProductsController(mockContext.Object, mockHubContext.Object);
-
-            // Act
-            var result = await controller.DeleteProduct(2); // Product with ID 2 doesn't exist
-
-            // Assert
-            var notFoundResult = Assert.IsType<NotFoundResult>(result);
+            Assert.NotNull(result);
         }
 
     }

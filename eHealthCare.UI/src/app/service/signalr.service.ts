@@ -15,7 +15,7 @@ export class SignalrService {
   constructor(private toastr: ToastrService, public productService: ProductService) { }
 
   public startConnection = () => {
-    this.hubConnection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.Information).withUrl("https://localhost:60841/notify",
+    this.hubConnection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.Information).withUrl(environment.baseUrl + "notify",
       {
         skipNegotiation: true,
         transport: signalR.HttpTransportType.WebSockets,

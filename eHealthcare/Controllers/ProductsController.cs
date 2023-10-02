@@ -9,6 +9,7 @@ using eHealthcare.Data;
 using eHealthcare.Entities;
 using Microsoft.AspNetCore.SignalR;
 using eHealthcare.Dto;
+using eHealthcare.Services;
 
 namespace eHealthcare.Controllers
 {
@@ -19,11 +20,13 @@ namespace eHealthcare.Controllers
         private readonly eHealthcareContext _context;
         private readonly IHubContext<BroadcastHub, IHubClient> _hubContext;
         private readonly ILogger<ProductsController> _logger;
-        public ProductsController(eHealthcareContext context, IHubContext<BroadcastHub, IHubClient> hubContext = null, ILogger<ProductsController> logger = null)
+        private readonly IProductService _productService;
+        public ProductsController(eHealthcareContext context, IHubContext<BroadcastHub, IHubClient> hubContext = null, ILogger<ProductsController> logger = null, IProductService productService = null)
         {
             _context = context;
             _hubContext = hubContext;
             _logger = logger;
+            _productService = productService;
         }
 
 
@@ -31,17 +34,13 @@ namespace eHealthcare.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProduct()
         {
-          if (_context.Product == null)
-          {
-              return NotFound();
-          }
-          var product = await _context.Product
-                .Include(p => p.TherapeuticClass)
-                .Include(p => p.ATCCode)
-                .Include(p => p.PharmaceuticalForm)
-                .Include(p => p.ActiveIngredient)
-                .Include(p => p.ProductUnit)
-                .ToListAsync();
+            if (_context.Product == null)
+            {
+                return NotFound();
+            }
+
+           var product = await _productService.GetProductsAsync();
+         
             return product;
         }
 
@@ -53,12 +52,7 @@ namespace eHealthcare.Controllers
           {
               return NotFound();
           }
-            var product = await _context.Product.FindAsync(id);
-            product!.ActiveIngredient = await _context.ActiveIngredients.FindAsync(product.ActiveIngredientID);
-            product!.PharmaceuticalForm = await _context.PharmaceuticalForms.FindAsync(product.PharmaceuticalFormID);
-            product!.TherapeuticClass = await _context.TherapeuticClass.FindAsync(product.TherapeuticClassID);
-            product!.ProductUnit = await _context.ProductUnits.FindAsync(product.ProductUnitID);
-            product!.ATCCode = await _context.ATCCode.FindAsync(product.ATCCodeID);
+           var product = await _productService.GetProductByIdAsync(id);
             if (product == null)
             {
                 return NotFound();
@@ -72,36 +66,18 @@ namespace eHealthcare.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProduct(int id, Product product)
         {
+            _logger.LogInformation($"starting update product process with this product Details: {product} and product Id: {id}");
+
             if (id != product.Id)
             {
                 return BadRequest();
             }
-
-            _context.Entry(product).State = EntityState.Modified;
-
-            Notification notification = new Notification()
+            var result = await _productService.UpdateProductAsync(id, product);
+            if (result == 0)
             {
-                Title = "Product Updated",
-                Description = $"This product: {product.Name} has been updated by someone.",
-                TranType = "Update"
-            };
-
-            try
-            {
-                await _context.SaveChangesAsync();
-                await _hubContext.Clients.All.BroadcastMessage(notification);
+                return NotFound();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+
 
             return NoContent();
         }
@@ -111,41 +87,17 @@ namespace eHealthcare.Controllers
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct(ProductDTO productDto)
         {
-          if (_context.Product == null)
-          {
-              return Problem("Entity set 'eHealthcareContext.Product'  is null.");
-          }
-
-            var product = new Product
+            _logger.LogInformation($"starting add product process with this product Details: {productDto}");
+            if (_context.Product == null)
             {
-                //Id = productDto.Id,
-                Name = productDto.Name,
-                Classifications = productDto.Classifications,
-                CompetentAuthorityStatus = productDto.CompetentAuthorityStatus,
-                InternalStatus = productDto.InternalStatus,
-                ActiveIngredientID = productDto.ActiveIngredientID,
-                ProductUnitID = productDto.ProductUnitID,
-                PharmaceuticalFormID = productDto.PharmaceuticalFormID,
-                TherapeuticClassID = productDto.TherapeuticClassID,
-                ATCCodeID = productDto.ATCCodeID,
-                ActiveIngredient = await _context.ActiveIngredients.FindAsync(productDto.ActiveIngredientID),
-                PharmaceuticalForm = await _context.PharmaceuticalForms.FindAsync(productDto.PharmaceuticalFormID),
-                TherapeuticClass = await _context.TherapeuticClass.FindAsync(productDto.TherapeuticClassID),
-                ProductUnit = await _context.ProductUnits.FindAsync(productDto.ProductUnitID)
+                return Problem("Entity set 'eHealthcareContext.Product'  is null.");
+            }
 
-          };
+           var result = await _productService.AddproductAsync(productDto);
 
-            _context.Product.Add(product);
-            Notification notification = new Notification()
-            {
-                Title = "Product Added",
-                Description = $"A new product: {product.Name} has been added by someone.",
-                TranType = "Create"
-            };
-            await _context.SaveChangesAsync();
-            await _hubContext.Clients.All.BroadcastMessage(notification);
+          
 
-            return CreatedAtAction("GetProduct", new { id = product.Id }, product);
+            return CreatedAtAction("GetProduct", new { id = result.Id }, result);
         }
 
         // DELETE: api/Products/5
@@ -156,29 +108,10 @@ namespace eHealthcare.Controllers
             {
                 return NotFound();
             }
-            var product = await _context.Product.FindAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            Notification notification = new Notification()
-            {
-                Title = "Product Deleted",
-                Description = $"This product: {product.Name} has been deleted by someone.",
-                TranType = "Delete"
-            };
-
-            _context.Product.Remove(product);
-            await _context.SaveChangesAsync();
-            await _hubContext.Clients.All.BroadcastMessage(notification);
-
+            await _productService.DeleteProductAsync(id);
             return NoContent();
         }
 
-        private bool ProductExists(int id)
-        {
-            return (_context.Product?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+       
     }
 }

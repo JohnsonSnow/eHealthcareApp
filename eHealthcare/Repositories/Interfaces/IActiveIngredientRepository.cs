@@ -1,7 +1,7 @@
 ﻿using eHealthcare.Dto;
 using eHealthcare.Entities;
 
-namespace eHealthcare.Repositories
+namespace eHealthcare.Repositories.Interfaces
 {
     public interface IActiveIngredientRepository
     {

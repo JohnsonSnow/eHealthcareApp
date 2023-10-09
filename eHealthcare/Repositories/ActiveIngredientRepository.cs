@@ -1,6 +1,7 @@
 ﻿using eHealthcare.Data;
 using eHealthcare.Dto;
 using eHealthcare.Entities;
+using eHealthcare.Repositories.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,11 @@ namespace eHealthcare.Repositories
             _hubContext = hubContext;
         }
 
+        /// <summary>
+        /// Add Active Ingredient
+        /// </summary>
+        /// <param name="modelDto"></param>
+        /// <returns></returns>
         public async Task<ActiveIngredient> AddAsync(ActiveIngredientDTO modelDto)
         {
             try
@@ -45,6 +51,12 @@ namespace eHealthcare.Repositories
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Delete 
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public Task DeleteAsync(int productId)
         {
             throw new NotImplementedException();

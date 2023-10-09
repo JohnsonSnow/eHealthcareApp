@@ -9,12 +9,12 @@ export class Product {
   public pharmaceuticalForm!: any;
   public therapeuticClass!: any;
   public atcCode!: any;
-  public activeIngredientID!: number;
-  public pharmaceuticalFormID!: number;
-  public productUnitID!: number;
+  public activeIngredientId!: number;
+  public pharmaceuticalFormId!: number;
+  public productUnitId!: number;
   public productUnit!: any;
-  public atcCodeID!: number;
-  public therapeuticClassID!: number;
+  public atcCodeId!: number;
+  public therapeuticClassId!: number;
  
 
 }

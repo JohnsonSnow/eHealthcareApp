@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using eHealthcare.Data;
 using eHealthcare.Entities;
 using eHealthcare.Dto;
-using eHealthcare.Services;
 using Microsoft.AspNetCore.SignalR;
+using eHealthcare.Services;
 
 namespace eHealthcare.Controllers
 {

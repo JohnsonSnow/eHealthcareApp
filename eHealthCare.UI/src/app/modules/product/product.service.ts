@@ -76,12 +76,12 @@ export class ProductService {
       pharmaceuticalForm: '',
       therapeuticClass: '',
       atcCode: '',
-      activeIngredientID: 0,
-      pharmaceuticalFormID: 0,
-      productUnitID: 0,
+      activeIngredientId: 0,
+      pharmaceuticalFormId: 0,
+      productUnitId: 0,
       productUnit: '',
-      atcCodeID: 0,
-      therapeuticClassID: 0 
+      atcCodeId: 0,
+      therapeuticClassId: 0 
     }
   }
 }

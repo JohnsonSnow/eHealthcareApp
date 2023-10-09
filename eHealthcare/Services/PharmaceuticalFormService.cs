@@ -1,6 +1,7 @@
 ﻿using eHealthcare.Entities;
-using eHealthcare.Repositories.Interfaces;
 using eHealthcare.Repositories;
+using eHealthcare.Repositories.Interfaces;
+using eHealthcare.Services;
 
 namespace eHealthcare.Services
 {

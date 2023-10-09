@@ -21,7 +21,6 @@ export class SignalrService {
         transport: signalR.HttpTransportType.WebSockets,
       }
     ).build();
-
     this.hubConnection.start().then(() => console.log('Connection started')).catch(err => console.log('Error while starting connection: ' + err))
   }
 
@@ -33,6 +32,9 @@ export class SignalrService {
   }
 
   showNotification(notification: Notification) {
+    console.log("duur",notification)
     this.toastr.warning(notification.description, notification.title);
+    this.hubConnection.stop(); //
+
   }
 }

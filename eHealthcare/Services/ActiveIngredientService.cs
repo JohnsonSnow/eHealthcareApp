@@ -1,7 +1,7 @@
 ﻿using eHealthcare.Dto;
 using eHealthcare.Entities;
 using eHealthcare.Repositories.Interfaces;
-using eHealthcare.Repositories;
+using eHealthcare.Services;
 using Microsoft.CodeAnalysis;
 
 namespace eHealthcare.Services

@@ -1,6 +1,7 @@
 ﻿using eHealthcare.Data;
 using eHealthcare.Dto;
 using eHealthcare.Entities;
+using eHealthcare.Repositories.Interfaces;
 
 namespace eHealthcare.Repositories
 {

@@ -4,6 +4,7 @@ using eHealthcare.Dto;
 using eHealthcare.Entities;
 using eHealthcare.Repositories;
 using eHealthcare.Repositories.Interfaces;
+using eHealthcare.Services;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;

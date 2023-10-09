@@ -1,5 +1,6 @@
 ﻿using eHealthcare.Data;
 using eHealthcare.Entities;
+using eHealthcare.Repositories.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 
 namespace eHealthcare.Repositories

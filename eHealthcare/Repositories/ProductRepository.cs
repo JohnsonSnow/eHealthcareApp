@@ -1,6 +1,7 @@
 ﻿using eHealthcare.Data;
 using eHealthcare.Dto;
 using eHealthcare.Entities;
+using eHealthcare.Repositories.Interfaces;
 using eHealthcare.Services;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,11 @@ namespace eHealthcare.Repositories
         }
 
       
-
+        /// <summary>
+        /// Add product
+        /// </summary>
+        /// <param name="productDto"></param>
+        /// <returns></returns>
         public async Task<Product> AddproductAsync(ProductDTO productDto)
         {
             try
@@ -32,11 +37,11 @@ namespace eHealthcare.Repositories
                     Classifications = productDto.Classifications,
                     CompetentAuthorityStatus = productDto.CompetentAuthorityStatus,
                     InternalStatus = productDto.InternalStatus,
-                    ActiveIngredientID = productDto.ActiveIngredientID,
-                    ProductUnitID = productDto.ProductUnitID,
-                    PharmaceuticalFormID = productDto.PharmaceuticalFormID,
-                    TherapeuticClassID = productDto.TherapeuticClassID,
-                    ATCCodeID = productDto.ATCCodeID,
+                    ActiveIngredientId = productDto.ActiveIngredientID,
+                    ProductUnitId = productDto.ProductUnitID,
+                    PharmaceuticalFormId = productDto.PharmaceuticalFormID,
+                    TherapeuticClassId = productDto.TherapeuticClassID,
+                    ATCCodeId = productDto.ATCCodeID,
                     ActiveIngredient = await _context.ActiveIngredients.FindAsync(productDto.ActiveIngredientID),
                     PharmaceuticalForm = await _context.PharmaceuticalForms.FindAsync(productDto.PharmaceuticalFormID),
                     TherapeuticClass = await _context.TherapeuticClass.FindAsync(productDto.TherapeuticClassID),
@@ -49,6 +54,7 @@ namespace eHealthcare.Repositories
 
                 Notification notification = new Notification()
                 {
+                    Id = Guid.NewGuid(),
                     Title = "Product Added",
                     Description = $"A new product: {productDto.Name} has been added by someone.",
                     TranType = "Create"
@@ -65,6 +71,11 @@ namespace eHealthcare.Repositories
             }
         }
 
+        /// <summary>
+        /// Delete Product
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
         public async Task DeleteProductAsync(int productId)
         {
             var product = await _context.Product.FindAsync(productId);
@@ -75,6 +86,7 @@ namespace eHealthcare.Repositories
 
             Notification notification = new Notification()
             {
+                Id = Guid.NewGuid(),
                 Title = "Product Deleted",
                 Description = $"This product: {product.Name} has been deleted by someone.",
                 TranType = "Delete"
@@ -86,6 +98,11 @@ namespace eHealthcare.Repositories
 
         }
 
+        /// <summary>
+        /// Get Product By Id
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
         public async Task<Product> GetProductByIdAsync(int productId)
         {
             _logger.LogInformation($"Getting Product {productId}");
@@ -96,11 +113,11 @@ namespace eHealthcare.Repositories
                 {
                     return null;
                 }
-                product!.ActiveIngredient = await _context.ActiveIngredients.FindAsync(product.ActiveIngredientID);
-                product!.PharmaceuticalForm = await _context.PharmaceuticalForms.FindAsync(product.PharmaceuticalFormID);
-                product!.TherapeuticClass = await _context.TherapeuticClass.FindAsync(product.TherapeuticClassID);
-                product!.ProductUnit = await _context.ProductUnits.FindAsync(product.ProductUnitID);
-                product!.ATCCode = await _context.ATCCode.FindAsync(product.ATCCodeID);
+                product!.ActiveIngredient = await _context.ActiveIngredients.FindAsync(product.ActiveIngredientId);
+                product!.PharmaceuticalForm = await _context.PharmaceuticalForms.FindAsync(product.PharmaceuticalFormId);
+                product!.TherapeuticClass = await _context.TherapeuticClass.FindAsync(product.TherapeuticClassId);
+                product!.ProductUnit = await _context.ProductUnits.FindAsync(product.ProductUnitId);
+                product!.ATCCode = await _context.ATCCode.FindAsync(product.ATCCodeId);
 
                 return product;
             }
@@ -111,6 +128,12 @@ namespace eHealthcare.Repositories
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="productName"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public Task<Product> GetProductByNameAsync(string productName)
         {
             throw new NotImplementedException();
@@ -145,6 +168,7 @@ namespace eHealthcare.Repositories
 
             Notification notification = new Notification()
             {
+                Id= Guid.NewGuid(),
                 Title = "Product Updated",
                 Description = $"This product: {product.Name} has been updated by someone.",
                 TranType = "Update"
@@ -160,7 +184,7 @@ namespace eHealthcare.Repositories
             {
                 if (!ProductExists(id))
                 {
-                    return 0;
+                    return 0; // doing this cause i'm not creating a custom exceptions handler.
                 }
                 else
                 {
@@ -169,7 +193,7 @@ namespace eHealthcare.Repositories
                     throw;
                 }
             }
-            return 1;
+            return 1;// doing this cause i'm not creating a custom exceptions handler.
         }
 
         public bool ProductExists(int id)

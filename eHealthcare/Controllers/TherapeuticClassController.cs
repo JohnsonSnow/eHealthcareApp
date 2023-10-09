@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using eHealthcare.Data;
 using eHealthcare.Entities;
-using eHealthcare.Services;
 using eHealthcare.Dto;
+using eHealthcare.Services;
 
 namespace eHealthcare.Controllers
 {

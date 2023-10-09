@@ -28,7 +28,7 @@
         <label class="col-md-3 col-form-label"
                for="activeIngredientsId">Active Ingredients</label>
         <div class="col-md-7">
-          <select id="activeIngredientsId" formControlName="activeIngredientID" class="form-select">
+          <select id="activeIngredientsId" formControlName="activeIngredientId" class="form-select">
             <option disabled selected>Select an Option</option>
             <option *ngFor="let item of ActiveIngredient" [value]="item.activeIngredientId">{{item.name}}</option>
 
@@ -41,7 +41,7 @@
         <label class="col-md-3 col-form-label"
                for="pharmaceuticalFormsId">Pharmaceutical Forms</label>
         <div class="col-md-7">
-          <select id="pharmaceuticalFormsId" formControlName="pharmaceuticalFormID" class="form-select">
+          <select id="pharmaceuticalFormsId" formControlName="pharmaceuticalFormId" class="form-select">
             <option disabled selected>Select an Option</option>
             <option *ngFor="let item of PharmaceuticalForm" [value]="item.pharmaceuticalFormId">{{item.name}}</option>
           </select>
@@ -53,7 +53,7 @@
         <label class="col-md-3 col-form-label"
                for="therapeuticClassId">Therapeutic Class</label>
         <div class="col-md-7">
-          <select id="therapeuticClassId" formControlName="therapeuticClassID" class="form-select">
+          <select id="therapeuticClassId" formControlName="therapeuticClassId" class="form-select">
             <option disabled selected>Select an Option</option>
             <option *ngFor="let item of TherapeuticClass" [value]="item.therapeuticClassId">{{item.name}}</option>
           </select>
@@ -65,7 +65,7 @@
         <label class="col-md-3 col-form-label"
                for="atcCodeId">ATC Code</label>
         <div class="col-md-7">
-          <select id="atcCodeId" formControlName="atcCodeID" class="form-select">
+          <select id="atcCodeId" formControlName="atcCodeId" class="form-select">
             <option disabled selected>Select an Option</option>
             <option *ngFor="let item of ATCCode" [value]="item.atcCodeId">{{item.code}}</option>
 
@@ -118,7 +118,7 @@
         <label class="col-md-3 col-form-label"
                for="unitId">Unit</label>
         <div class="col-md-7">
-          <select id="unitId" formControlName="productUnitID" aria-label="Select Unit" class="form-select">
+          <select id="unitId" formControlName="productUnitId" aria-label="Select Unit" class="form-select">
             <option selected>Select an Option</option>
             <option *ngFor="let item of ProductUnit" [value]="item.productUnitId">{{item.unitValue}}</option>
           </select>

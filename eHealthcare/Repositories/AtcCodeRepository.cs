@@ -1,6 +1,7 @@
 ﻿using eHealthcare.Data;
 using eHealthcare.Dto;
 using eHealthcare.Entities;
+using eHealthcare.Repositories.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 

@@ -71,11 +71,11 @@ export class ProductUpdateComponent implements OnInit, OnDestroy {
       pharmaceuticalForms: '',
       therapeuticClass: '',
       atcCode: '',
-      activeIngredientID: 0,
-      pharmaceuticalFormID: 0,
-      productUnitID: 0,
-      atcCodeID: 0,
-      therapeuticClassID: 0 
+      activeIngredientId: 0,
+      pharmaceuticalFormId: 0,
+      productUnitId: 0,
+      atcCodeId: 0,
+      therapeuticClassId: 0 
     });
 
     this.sub = this.route.paramMap.subscribe(
@@ -93,12 +93,12 @@ export class ProductUpdateComponent implements OnInit, OnDestroy {
             pharmaceuticalForm: '',
             therapeuticClass: '',
             atcCode: '',
-            activeIngredientID: 0,
-            pharmaceuticalFormID: 0,
-            productUnitID: 0,
+            activeIngredientId: 0,
+            pharmaceuticalFormId: 0,
+            productUnitId: 0,
             productUnit: '',
-            atcCodeID: 0,
-            therapeuticClassID: 0 
+            atcCodeId: 0,
+            therapeuticClassId: 0 
           };
           this.displayProduct(product);
         }
@@ -188,12 +188,12 @@ export class ProductUpdateComponent implements OnInit, OnDestroy {
       pharmaceuticalForm: '',
       therapeuticClass: this.product.therapeuticClass,
       atcCode: this.product.atcCode,
-      activeIngredientID: this.product.activeIngredientID,
-      pharmaceuticalFormID: this.product.pharmaceuticalFormID,
-      productUnitID: this.product.productUnitID,
+      activeIngredientId: this.product.activeIngredientId,
+      pharmaceuticalFormId: this.product.pharmaceuticalFormId,
+      productUnitId: this.product.productUnitId,
       productUnit: this.product.productUnit,
-      atcCodeID: this.product.atcCodeID,
-      therapeuticClassID: this.product.therapeuticClassID
+      atcCodeId: this.product.atcCodeId,
+      therapeuticClassId: this.product.therapeuticClassId
     });
   }  
 

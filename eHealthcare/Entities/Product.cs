@@ -14,21 +14,21 @@ namespace eHealthcare.Entities
         public string InternalStatus { get; set; } = string.Empty;
 
 
-        public int ActiveIngredientID { get; set; }
+        public int ActiveIngredientId { get; set; }
         public ActiveIngredient? ActiveIngredient { get; set; }
 
-        public int PharmaceuticalFormID { get; set; }
+        public int PharmaceuticalFormId { get; set; }
 
         public PharmaceuticalForm? PharmaceuticalForm { get; set; }
-        public int ProductUnitID { get; set; }
+        public int ProductUnitId { get; set; }
 
         public ProductUnit? ProductUnit { get; set; }
 
-        public int ATCCodeID { get; set; }
+        public int ATCCodeId { get; set; }
 
         public ATCCode? ATCCode { get; set; }
 
-        public int TherapeuticClassID { get; set; }
+        public int TherapeuticClassId { get; set; }
        // [JsonIgnore]
 
         public TherapeuticClass? TherapeuticClass { get; set; }

@@ -32,7 +32,9 @@ export class ProductListComponent implements OnInit {
 
   constructor(private productService: ProductService, private signalrService: SignalrService) {
     this.getProductData();
-    this.signalrService.startConnection();
+    //Not an ideal way of starting a connection because this could lead to multiple concurrent connection.
+    //It's better to be called in a gobal location.
+    this.signalrService.startConnection();  
     this.signalrService.addProductListener();  
   }
 

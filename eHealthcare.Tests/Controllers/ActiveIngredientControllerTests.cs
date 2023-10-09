@@ -2,7 +2,6 @@ using eHealthcare.Controllers;
 using eHealthcare.Data;
 using eHealthcare.Dto;
 using eHealthcare.Entities;
-using eHealthcare.Repositories;
 using eHealthcare.Repositories.Interfaces;
 using eHealthcare.Services;
 using Microsoft.AspNetCore.Mvc;
